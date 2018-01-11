@@ -4,7 +4,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.internal.Locatable;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,8 +36,7 @@ public class TestFabric {
 		
 		// Scroll down to where you can see the "View all sessions" button
 		WebElement viewAllSessions = driver.findElement(By.linkText(CRASHLYTICS_VIEW_ALL_SESSIONS_LINK));
-		Locatable element = (Locatable) viewAllSessions;
-		Point p = element.getCoordinates().onPage();
+		Point p = viewAllSessions.getLocation();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollTo(" + p.getX() + "," + (p.getY()+150) + ");", new Object[]{});
 		viewAllSessions.click();
