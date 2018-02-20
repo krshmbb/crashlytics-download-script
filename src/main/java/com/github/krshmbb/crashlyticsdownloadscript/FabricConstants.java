@@ -1,3 +1,6 @@
+package com.github.krshmbb.crashlyticsdownloadscript;
+
+
 /**
  * Utility class that maintains Fabric credentials and other msic. constants.
  */
