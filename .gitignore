@@ -9,7 +9,6 @@ target/
 *.class
  
 # Package Files #
-*.jar
 *.war
 *.ear
 *.db
@@ -69,3 +68,21 @@ local.properties
  
 # PDT-specific
 .buildpath
+
+######################
+# IntelliJ
+######################
+
+.idea/
+.navigation/
+*.iml
+*.ipr
+*.iws
+
+######################
+# Gradle
+######################
+
+.gradle/
+.gradletasknamecache
+
