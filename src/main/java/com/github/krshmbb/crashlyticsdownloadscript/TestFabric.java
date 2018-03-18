@@ -29,31 +29,23 @@ public class TestFabric {
 		driver.get(FabricConstants.FABRIC_CRASH_URL);
 		
 		// Login
-		WebElement email = driver.findElement(By.id(LOGIN_EMAIL_ELEMENT_ID));
-		email.sendKeys(new CharSequence[] {FabricConstants.FABRIC_EMAIL});
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		WebElement password = driver.findElement(By.id(LOGIN_PASSWORD_ELEMENT_ID));
-		password.sendKeys(new CharSequence[] {FabricConstants.FABRIC_PASSWORD});
-		email.submit();
+		login(driver);
 		
 		// Scroll down to where you can see the "View all sessions" button
-		WebElement viewAllSessions = driver.findElement(By.linkText(CRASHLYTICS_VIEW_ALL_SESSIONS_LINK));
-		Point p = viewAllSessions.getLocation();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollTo(" + p.getX() + "," + (p.getY()+150) + ");", new Object[]{});
-		viewAllSessions.click();
+		scrollToViewAllSession(driver, js);
 		
 		while (true) {
 			// Download Download.txt
-			driver.findElement(By.linkText(CRASHLYTICS_DOWNLOAD_TXT_LINK)).click();
-			
+			download(driver, CRASHLYTICS_DOWNLOAD_TXT_LINK);
+
 			// Flip to Log			
 			WebElement toggle = driver.findElement(By.id(CRASHLYTICS_LOG_KEY_TOGGLE_ID));
 			js.executeScript("arguments[0].click();", new Object[] {toggle});
 			
 			// Download Download .log
 			try {
-			driver.findElement(By.linkText(CRASHLYTICS_DOWNLOAD_LOG_LINK)).click();
+				download(driver, CRASHLYTICS_DOWNLOAD_LOG_LINK);
 			} catch (Exception e) {}
 			
 			// Switch back to 'Key'
@@ -66,4 +58,25 @@ public class TestFabric {
 			Thread.sleep(1000);
 		}
 	}
+
+	private static void scrollToViewAllSession(WebDriver driver, JavascriptExecutor js) {
+		WebElement viewAllSessions = driver.findElement(By.linkText(CRASHLYTICS_VIEW_ALL_SESSIONS_LINK));
+		Point p = viewAllSessions.getLocation();
+		js.executeScript("window.scrollTo(" + p.getX() + "," + (p.getY()+150) + ");", new Object[]{});
+		viewAllSessions.click();
+	}
+
+	private static void login(WebDriver driver) {
+		WebElement email = driver.findElement(By.id(LOGIN_EMAIL_ELEMENT_ID));
+		email.sendKeys(new CharSequence[] {FabricConstants.FABRIC_EMAIL});
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		WebElement password = driver.findElement(By.id(LOGIN_PASSWORD_ELEMENT_ID));
+		password.sendKeys(new CharSequence[] {FabricConstants.FABRIC_PASSWORD});
+		email.submit();
+	}
+
+	private static void download(WebDriver driver, String linkText) {
+		driver.findElement(By.linkText(linkText)).click();
+	}
+
 }
